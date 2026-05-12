@@ -81,7 +81,7 @@ function App() {
           setIsLoggedIn={setIsLoggedIn}
         />
 
-        <div className='p-3 md:p-6'>
+        <div className='p-3 md:p-6 pb-24 md:pb-6'>
 
           {renderPage()}
 

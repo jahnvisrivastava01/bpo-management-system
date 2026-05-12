@@ -8,15 +8,16 @@ const Navbar = ({ setIsLoggedIn }) => {
   }
 
   return (
-    <div className='bg-white shadow p-4 flex justify-between items-center'>
 
-      <h2 className='text-xl font-semibold'>
-        BPO Management Dashboard
+    <div className='bg-white shadow px-4 py-3 flex justify-between items-center'>
+
+      <h2 className='text-lg md:text-2xl font-semibold truncate'>
+        BPO Dashboard
       </h2>
 
       <button
         onClick={handleLogout}
-        className='bg-red-500 text-white px-4 py-2 rounded-lg'
+        className='bg-red-500 text-white px-4 py-2 rounded-xl text-sm md:text-base'
       >
         Logout
       </button>
