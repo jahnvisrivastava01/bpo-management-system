@@ -3,6 +3,10 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background: #f3f4f6;
+  background: linear-gradient(
+  to bottom right,
+  #eef2ff,
+  #f8fafc
+);
   
 }

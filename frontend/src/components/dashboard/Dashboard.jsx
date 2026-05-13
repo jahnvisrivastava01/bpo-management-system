@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 
 import {
+  FaUsers,
+  FaProjectDiagram,
+  FaTicketAlt,
+  FaClipboardCheck,
+} from 'react-icons/fa'
+
+import {
   getEmployeeCount,
 } from '../../services/employeeService'
 
@@ -30,56 +37,85 @@ const Dashboard = () => {
 
   }, [])
 
-  return (
-    <div>
+  const cards = [
+    {
+      title: 'Employees',
+      value: employeeCount,
+      icon: <FaUsers />,
+      growth: '+12% this month',
+    },
 
-      <h1 className='text-3xl font-bold mb-6'>
+    {
+      title: 'Projects',
+      value: 15,
+      icon: <FaProjectDiagram />,
+      growth: '+4 active',
+    },
+
+    {
+      title: 'Tickets',
+      value: 42,
+      icon: <FaTicketAlt />,
+      growth: '+8 resolved today',
+    },
+
+    {
+      title: 'Attendance',
+      value: '92%',
+      icon: <FaClipboardCheck />,
+      growth: '+3% improvement',
+    },
+  ]
+
+  return (
+
+    <div className='pb-24 md:pb-0'>
+
+      <h1 className='text-2xl md:text-4xl font-bold text-slate-800 mb-6 md:mb-8'>
         Dashboard
       </h1>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6'>
 
-        <div className='bg-white p-5 rounded-xl shadow'>
-          <h2 className='text-gray-500'>
-            Total Employees
-          </h2>
+        {cards.map((card, index) => (
 
-          <p className='text-3xl font-bold mt-2'>
-            {employeeCount}
-          </p>
-        </div>
+          <div
+            key={index}
+            className='bg-white/80 backdrop-blur-lg rounded-2xl p-5 md:p-6 shadow hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-white/30'
+          >
 
-        <div className='bg-white p-5 rounded-xl shadow'>
-          <h2 className='text-gray-500'>
-            Projects
-          </h2>
+            <div className='flex justify-between items-start'>
 
-          <p className='text-3xl font-bold mt-2'>
-            15
-          </p>
-        </div>
+              <div>
 
-        <div className='bg-white p-5 rounded-xl shadow'>
-          <h2 className='text-gray-500'>
-            Tickets
-          </h2>
+                <h2 className='text-gray-500 text-sm md:text-lg'>
+                  {card.title}
+                </h2>
 
-          <p className='text-3xl font-bold mt-2'>
-            42
-          </p>
-        </div>
+                <p className='text-3xl md:text-4xl font-bold mt-2 md:mt-3 text-slate-800'>
+                  {card.value}
+                </p>
 
-        <div className='bg-white p-5 rounded-xl shadow'>
-          <h2 className='text-gray-500'>
-            Attendance
-          </h2>
+                <p className='text-green-500 text-xs md:text-sm mt-2 md:mt-3'>
+                  {card.growth}
+                </p>
 
-          <p className='text-3xl font-bold mt-2'>
-            92%
-          </p>
-        </div>
+              </div>
+
+              <div className='text-3xl md:text-5xl text-indigo-600'>
+
+                {card.icon}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        ))}
 
       </div>
+
     </div>
   )
 }

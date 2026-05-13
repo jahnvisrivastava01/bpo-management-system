@@ -14,6 +14,12 @@ const Employees = () => {
   const [showForm, setShowForm] =
     useState(false)
 
+  const [search, setSearch] =
+    useState('')
+
+  const [loading, setLoading] =
+    useState(true)
+
   const [form, setForm] = useState({
     emp_code: '',
     name: '',
@@ -32,6 +38,8 @@ const Employees = () => {
 
       setEmployees(response.data)
 
+      setLoading(false)
+
     } catch (error) {
 
       console.log(error)
@@ -46,19 +54,42 @@ const Employees = () => {
 
   const handleSubmit = async () => {
 
-    try {
+  if (
+    !form.emp_code ||
+    !form.name ||
+    !form.email ||
+    !form.role ||
+    !form.department ||
+    !form.salary
+  ) {
 
-      await addEmployee(form)
+    alert('Please fill all fields')
 
-      fetchEmployees()
-
-      setShowForm(false)
-
-    } catch (error) {
-
-      console.log(error)
-    }
+    return
   }
+
+  try {
+
+    await addEmployee(form)
+
+    fetchEmployees()
+
+    setShowForm(false)
+
+    setForm({
+      emp_code: '',
+      name: '',
+      email: '',
+      role: '',
+      department: '',
+      salary: '',
+    })
+
+  } catch (error) {
+
+    console.log(error)
+  }
+}
 
   const handleDelete = async (id) => {
 
@@ -75,32 +106,53 @@ const Employees = () => {
   }
 
   return (
-    <div>
 
-      <div className='flex justify-between items-center mb-6'>
+    <div className='pb-24 md:pb-0'>
 
-        <h1 className='text-3xl font-bold'>
-          Employees
-        </h1>
+      <div className='flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6'>
+
+        <div>
+
+          <h1 className='text-2xl md:text-4xl font-bold text-slate-800'>
+            Employees
+          </h1>
+
+          <p className='text-gray-500 mt-1'>
+            Total Employees:
+            <span className='font-semibold'>
+              {' '} {employees.length}
+            </span>
+          </p>
+
+        </div>
 
         <button
           onClick={() => setShowForm(true)}
-          className='bg-blue-600 text-white px-4 py-2 rounded-lg'
+          className='bg-indigo-600 hover:bg-indigo-700 transition-all duration-200 text-white px-5 py-3 rounded-2xl shadow-md'
         >
           Add Employee
         </button>
 
       </div>
 
+      <input
+        type='text'
+        placeholder='Search Employees...'
+        className='w-full md:w-80 mb-5 p-3 rounded-2xl border outline-none shadow-sm'
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
+      />
+
       {showForm && (
 
-        <div className='bg-white p-5 rounded-xl shadow mb-5'>
+        <div className='bg-white/80 backdrop-blur-lg rounded-2xl p-5 md:p-6 shadow hover:shadow-2xl transition-all duration-300 border border-gray-100 mb-6'>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 
             <input
               placeholder='Employee Code'
-              className='border p-2 rounded'
+              className='border p-3 rounded-2xl outline-none'
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -111,7 +163,7 @@ const Employees = () => {
 
             <input
               placeholder='Name'
-              className='border p-2 rounded'
+              className='border p-3 rounded-2xl outline-none'
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -122,7 +174,7 @@ const Employees = () => {
 
             <input
               placeholder='Email'
-              className='border p-2 rounded'
+              className='border p-3 rounded-2xl outline-none'
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -133,7 +185,7 @@ const Employees = () => {
 
             <input
               placeholder='Role'
-              className='border p-2 rounded'
+              className='border p-3 rounded-2xl outline-none'
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -144,7 +196,7 @@ const Employees = () => {
 
             <input
               placeholder='Department'
-              className='border p-2 rounded'
+              className='border p-3 rounded-2xl outline-none'
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -156,7 +208,7 @@ const Employees = () => {
             <input
               type='number'
               placeholder='Salary'
-              className='border p-2 rounded'
+              className='border p-3 rounded-2xl outline-none'
               onChange={(e) =>
                 setForm({
                   ...form,
@@ -169,7 +221,7 @@ const Employees = () => {
 
           <button
             onClick={handleSubmit}
-            className='bg-green-600 text-white px-4 py-2 rounded-lg mt-4'
+            className='mt-5 bg-indigo-600 hover:bg-indigo-700 transition-all duration-200 text-white px-5 py-3 rounded-2xl shadow-md'
           >
             Save Employee
           </button>
@@ -177,98 +229,127 @@ const Employees = () => {
         </div>
       )}
 
-      <div className='bg-white rounded-xl shadow overflow-x-auto'>
+      {loading ? (
 
-        <table className='w-full min-w-[800px]'>
+        <div className='text-center py-10 text-gray-500'>
+          Loading Employees...
+        </div>
 
-          <thead className='bg-gray-100'>
+      ) : (
 
-            <tr>
+        <div className='bg-white/80 backdrop-blur-lg rounded-2xl shadow hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-x-auto'>
 
-              <th className='p-3 text-left'>
-                ID
-              </th>
+          <table className='w-full min-w-[800px]'>
 
-              <th className='p-3 text-left'>
-                Name
-              </th>
+            <thead className='bg-gray-100'>
 
-              <th className='p-3 text-left'>
-                Email
-              </th>
+              <tr>
 
-              <th className='p-3 text-left'>
-                Role
-              </th>
+                <th className='p-4 text-left'>
+                  ID
+                </th>
 
-              <th className='p-3 text-left'>
-                Department
-              </th>
+                <th className='p-4 text-left'>
+                  Name
+                </th>
 
-              <th className='p-3 text-left'>
-                Salary
-              </th>
+                <th className='p-4 text-left'>
+                  Email
+                </th>
 
-              <th className='p-3 text-left'>
-                Actions
-              </th>
+                <th className='p-4 text-left'>
+                  Role
+                </th>
 
-            </tr>
+                <th className='p-4 text-left'>
+                  Department
+                </th>
 
-          </thead>
+                <th className='p-4 text-left'>
+                  Salary
+                </th>
 
-          <tbody>
-
-            {employees.map((emp) => (
-
-              <tr
-                key={emp.id}
-                className='border-t'
-              >
-
-                <td className='p-3'>{emp.id}</td>
-
-                <td className='p-3'>
-                  {emp.name}
-                </td>
-
-                <td className='p-3'>
-                  {emp.email}
-                </td>
-
-                <td className='p-3'>
-                  {emp.role}
-                </td>
-
-                <td className='p-3'>
-                  {emp.department}
-                </td>
-
-                <td className='p-3'>
-                  ₹ {emp.salary}
-                </td>
-
-                <td className='p-3'>
-
-                  <button
-                    onClick={() =>
-                      handleDelete(emp.id)
-                    }
-                    className='bg-red-500 text-white px-3 py-1 rounded'
-                  >
-                    Delete
-                  </button>
-
-                </td>
+                <th className='p-4 text-left'>
+                  Actions
+                </th>
 
               </tr>
-            ))}
 
-          </tbody>
+            </thead>
 
-        </table>
+            <tbody>
 
-      </div>
+              {employees
+                .filter((emp) =>
+                  emp.name
+                    ?.toLowerCase()
+                    .includes(
+                      search.toLowerCase()
+                    )
+                )
+                .map((emp) => (
+
+                  <tr
+                    key={emp.id}
+                    className='border-t hover:bg-gray-50 transition-all duration-200'
+                  >
+
+                    <td className='p-4'>
+                      {emp.id}
+                    </td>
+
+                    <td className='p-4 font-medium'>
+                      {emp.name}
+                    </td>
+
+                    <td className='p-4'>
+                      {emp.email}
+                    </td>
+
+                    <td className='p-4'>
+                      {emp.role}
+                    </td>
+
+                    <td className='p-4'>
+                      {emp.department}
+                    </td>
+
+                    <td className='p-4'>
+                      ₹ {emp.salary}
+                    </td>
+
+                    <td className='p-4'>
+
+                      <button
+                        onClick={() =>
+                          handleDelete(emp.id)
+                        }
+                        className='bg-red-500 hover:bg-red-600 transition-all duration-200 text-white px-4 py-2 rounded-xl shadow-md'
+                      >
+                        Delete
+                      </button>
+
+                    </td>
+
+                  </tr>
+                ))}
+
+            </tbody>
+
+          </table>
+
+          {employees.length === 0 && (
+
+            <div className='text-center py-10 text-gray-400'>
+
+              No Employees Found
+
+            </div>
+
+          )}
+
+        </div>
+      )}
 
     </div>
   )

@@ -2,7 +2,8 @@ import { useState } from 'react'
 
 const Login = ({ setIsLoggedIn }) => {
 
-  const [email, setEmail] = useState('')
+  const [email, setEmail] =
+    useState('')
 
   const [password, setPassword] =
     useState('')
@@ -14,12 +15,12 @@ const Login = ({ setIsLoggedIn }) => {
       password === 'admin123'
     ) {
 
-      setIsLoggedIn(true)
-
       localStorage.setItem(
         'isLoggedIn',
         'true'
       )
+
+      setIsLoggedIn(true)
 
     } else {
 
@@ -28,52 +29,80 @@ const Login = ({ setIsLoggedIn }) => {
   }
 
   return (
-    <div className='min-h-screen flex justify-center items-center bg-gray-100'>
 
-      <div className='bg-white p-8 rounded-2xl shadow-lg w-full max-w-md'>
+    <div className='min-h-screen flex justify-center items-center bg-gradient-to-br from-indigo-600 via-violet-600 to-slate-900 p-5'>
 
-        <h1 className='text-3xl font-bold text-center mb-6'>
-          BPO Management Login
+      <div className='bg-white/20 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl p-8 w-full max-w-md'>
+
+        <h1 className='text-4xl font-bold text-white text-center mb-2'>
+          BPO
         </h1>
 
-        <div className='space-y-4'>
+        <p className='text-center text-gray-200 mb-8'>
+          Management Dashboard
+        </p>
+
+        <div className='space-y-5'>
+
+          {/* EMAIL INPUT */}
 
           <input
             type='email'
-            placeholder='Email'
-            className='border p-3 rounded-lg w-full'
+            placeholder='Enter Email'
+            className='w-full p-4 rounded-2xl outline-none bg-white text-slate-800 placeholder-gray-500 shadow-md'
             onChange={(e) =>
               setEmail(e.target.value)
             }
           />
 
+          {/* PASSWORD INPUT */}
+
           <input
             type='password'
-            placeholder='Password'
-            className='border p-3 rounded-lg w-full'
+            placeholder='Enter Password'
+            className='w-full p-4 rounded-2xl outline-none bg-white text-slate-800 placeholder-gray-500 shadow-md'
             onChange={(e) =>
               setPassword(e.target.value)
             }
           />
 
+          {/* LOGIN BUTTON */}
+
           <button
             onClick={handleLogin}
-            className='bg-blue-600 text-white w-full py-3 rounded-lg'
+            className='w-full bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 text-white py-4 rounded-2xl shadow-lg font-semibold'
           >
             Login
           </button>
 
         </div>
 
-        <div className='mt-5 text-sm text-gray-500 text-center'>
-          Demo Credentials:
-          <br />
-          admin@gmail.com
-          <br />
-          admin123
+        {/* DEMO CREDENTIALS */}
+
+        <div className='mt-8 bg-white/10 border border-white/20 rounded-2xl p-4 text-sm text-gray-100'>
+
+          <p className='font-semibold mb-2'>
+            Demo Credentials
+          </p>
+
+          <p>
+            Email:
+            <span className='font-medium'>
+              {' '}admin@gmail.com
+            </span>
+          </p>
+
+          <p>
+            Password:
+            <span className='font-medium'>
+              {' '}admin123
+            </span>
+          </p>
+
         </div>
 
       </div>
+
     </div>
   )
 }
